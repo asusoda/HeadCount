@@ -6,6 +6,9 @@ from starlette.responses import StreamingResponse
 from vidgear.gears import CamGear
 from pydantic import BaseModel
 
+from . import database
+database.init()
+    
 app = FastAPI()
 
 origins = [
@@ -233,3 +236,6 @@ async def count_people(source: str):
 @app.get("/live_feed")
 async def live_feed():
     return StreamingResponse(generate_webcam_feed(), media_type="multipart/x-mixed-replace; boundary=frame")
+
+from app.services.rooms.api import router as rooms_router
+app.include_router(rooms_router, prefix="/rooms", tags=["rooms"])
