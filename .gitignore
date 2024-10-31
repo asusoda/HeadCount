@@ -41,3 +41,5 @@ next-env.d.ts
 
 frontend/package-lock.json
 backend/database.db
+database.db
+.vscode/settings.json
