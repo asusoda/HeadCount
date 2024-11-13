@@ -54,7 +54,7 @@ export default function Dashboard() {
     <div className="h-screen flex flex-col items-center justify-center w-full max-w-6xl p-6">
       {/* Title */}
       <h1 className="text-4xl font-bold mb-8 text-center text-black">
-        Dashboard
+        Bashdoard
       </h1>
 
       {/* Main Content: Video and Stats */}
