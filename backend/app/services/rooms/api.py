@@ -1,5 +1,4 @@
-from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlmodel import Session, select
 from app.database import engine
 from app.services.rooms.models import Room
 
@@ -7,6 +6,11 @@ from fastapi import APIRouter
 from fastapi import HTTPException, status
 
 router = APIRouter()
+
+@router.post('/test')
+async def test(room: Room) -> Room:
+    room.current_occupancy = 5
+    return room
 
 @router.delete('/{room_id}')
 async def delete_rooms(room_id: int):

@@ -1,7 +1,7 @@
 from app.models import Base
 from app.services.rooms.models import Room
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
+from app.services.auth.models import User
+from sqlmodel import Session, create_engine, select
 
 engine = create_engine("sqlite:///database.db", echo=True)
 
@@ -9,6 +9,7 @@ def init():
     Base.metadata.create_all(engine)
     with Session(engine) as session:
         # Drop all existing Room records
+        # TODO: Replace this deprecated method
         session.query(Room).delete()
         
         # Create mock Room records

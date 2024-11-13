@@ -43,3 +43,4 @@ frontend/package-lock.json
 backend/database.db
 database.db
 .vscode/settings.json
+backend/.env

@@ -239,3 +239,5 @@ async def live_feed():
 
 from app.services.rooms.api import router as rooms_router
 app.include_router(rooms_router, prefix="/rooms", tags=["rooms"])
+from app.services.auth.api import router as auth_router
+app.include_router(auth_router, prefix="/auth", tags=["auth"])

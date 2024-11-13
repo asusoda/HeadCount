@@ -1,17 +1,14 @@
 from typing import Optional
-from sqlalchemy import Integer
-from sqlalchemy import String
-from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy.orm import Mapped
-from sqlalchemy.orm import mapped_column
+from sqlmodel import Field, Session, SQLModel, create_engine, select
 from app.models import Base
+from app.services.auth.models import User
 
-class Room(Base):
+class Room(Base, table=True):
     __tablename__ = "room"
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(50))
-    max_occupancy: Mapped[int] = mapped_column(Integer)
-    current_occupancy: Mapped[Optional[int]] = mapped_column(Integer, default=0)
+    id: int = Field(primary_key=True)
+    name: str = Field(index=True)
+    max_occupancy: int = Field(default=10)
+    current_occupancy: int = Field(default=0)
 
     def __repr__(self) -> str:
         return (f"Room(id={self.id!r}, name={self.name!r}, "
