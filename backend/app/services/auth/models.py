@@ -1,9 +1,9 @@
 from sqlalchemy import Column, String, Boolean
 from app.models import Base
-from sqlmodel import Field
+from sqlmodel import Relationship, Field
 
 class User(Base):
-    __tablename__ = 'users'
+    # __tablename__ = "user"
     
     id: int = Field(primary_key=True)
     email: str = Field(unique=True, nullable=False)
