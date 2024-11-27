@@ -18,6 +18,8 @@
     "@nextui-org/theme": "^2.2.11",
     "axios": "^1.7.7",
     "framer-motion": "^11.9.0",
+    "js-cookie": "^2.2.1",
+    "jwt-decode": "^4.0.0",
     "next": "14.2.13",
     "qrcode.react": "^4.0.1",
     "react": "^18",
@@ -26,6 +28,7 @@
     "react-webcam": "^7.2.0"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/qrcode.react": "^1.0.5",
     "@types/react": "^18",

@@ -6,7 +6,7 @@ from app.services.rooms.models import RoomUserLink
 class User(Base, table=True):
     # __tablename__ = "user"
     
-    id: int | None = Field(default=None, primary_key=True)
+    id: str | None = Field(default=None, primary_key=True)
     email: str = Field(unique=True, nullable=False)
     verified_email: bool = Field(nullable=False)
     name: str = Field(nullable=False)

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import {
@@ -14,6 +14,8 @@ import {
   CardBody,
 } from "@nextui-org/react";
 import Image from "next/image";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 export default function Settings() {
   const [maxOccupancy, setMaxOccupancy] = useState(0);
@@ -21,7 +23,16 @@ export default function Settings() {
   const [selectedWebcam, setSelectedWebcam] = useState("default");
   const [youtubeURL, setYoutubeURL] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [username, setUsername] = useState<string | undefined>(undefined);
   const router = useRouter();
+
+  useEffect(() => {
+    const token = Cookies.get("session_token");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      setUsername(decodedToken.sub);
+    }
+  }, []);
 
   const handleSaveSettings = async (
     event: React.FormEvent<HTMLFormElement>
@@ -41,11 +52,10 @@ export default function Settings() {
     localStorage.setItem("maxOccupancy", maxOccupancy.toString());
     localStorage.setItem("selectedFeedType", selectedFeedType);
 
-
-    if (selectedFeedType === 'live') {
-      router.push('/dashboard');
+    if (selectedFeedType === "live") {
+      router.push("/dashboard");
     } else {
-      router.push('/video_dashboard');
+      router.push("/video_dashboard");
       localStorage.setItem("youtubeURL", youtubeURL);
 
       try {
@@ -60,7 +70,6 @@ export default function Settings() {
         alert("Failed to send video URL to the backend.");
       }
     }
-
   };
 
   const handleMaxOccupancyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,9 +82,23 @@ export default function Settings() {
     }
   };
 
+  const handleSignOut = async () => {
+    Cookies.remove("session_token");
+    router.push("/");
+  };
+
   return (
     <Card className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
       <CardBody className="bg-white p-8 rounded-md shadow-md text-center w-full sm:w-96">
+        <div className="flex justify-between items-center mb-4">
+          <div>
+            <p className="text-sm">Signed in as: {username}</p>
+          </div>
+          <Button onClick={handleSignOut} color="danger" size="sm">
+            Sign Out
+          </Button>
+        </div>
+
         <Image
           src="/images/logo.png"
           alt="HeadCount"

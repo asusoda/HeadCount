@@ -27,9 +27,10 @@ router = APIRouter()
 ### AUTHENTICATION ROUTES ###
 ### ROOT IS /auth ###
 
+from fastapi.responses import JSONResponse, RedirectResponse
+
 @router.get("/login/google")
 async def login_google():
-    from fastapi.responses import RedirectResponse
     google_auth_url = f"https://accounts.google.com/o/oauth2/auth?response_type=code&client_id={GOOGLE_CLIENT_ID}&redirect_uri={GOOGLE_REDIRECT_URI}&scope=openid%20profile%20email&access_type=offline"
     return RedirectResponse(url=google_auth_url)
 
@@ -49,7 +50,15 @@ async def auth_google(code: str):
     with Session(engine) as session:
         session.add(User(**user_info.json()))
         session.commit()
-    return user_info.json()
+
+    # Generate a JWT token for the user
+    token = jwt.encode({"sub": user_info.json()["email"]}, GOOGLE_CLIENT_SECRET, algorithm="HS256")
+
+    # Create a response with the token set in a cookie
+    response = RedirectResponse(url="http://localhost:3000/settings")
+    response.set_cookie(key="session_token", value=token, samesite="Lax")
+
+    return response
 
 @router.get("/token")
 async def get_token(token: str = Depends(oauth2_scheme)):
