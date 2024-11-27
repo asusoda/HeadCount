@@ -2,8 +2,8 @@ from sqlmodel import Field, Relationship, Session, SQLModel, create_engine, sele
 from app.models import Base
 
 class RoomUserLink(Base, table=True):
-    room_id: int | None = Field(default=None, foreign_key="room.id", primary_key=True)
     user_id: int | None = Field(default=None, foreign_key="user.id", primary_key=True)
+    room_id: int | None = Field(default=None, foreign_key="room.id", primary_key=True)
 
 class Room(Base, table=True):
     # __tablename__ = "room"

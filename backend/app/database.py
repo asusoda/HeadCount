@@ -1,5 +1,5 @@
 from app.models import Base
-from app.services.rooms.models import Room
+from app.services.rooms.models import Room, RoomUserLink
 from app.services.auth.models import User
 from sqlmodel import Session, create_engine, select, delete
 
@@ -10,8 +10,13 @@ def init():
     with Session(engine) as session:
         # Drop all existing Room records
         # TODO: Replace this deprecated method
-        session.exec(delete(Room))
-        session.exec(delete(User))
+        rooms = session.exec(select(Room)).all()
+        users = session.exec(select(User)).all()
+        for room in rooms:
+            session.delete(room)
+        for user in users:
+            session.delete(user)
+        session.commit()
         
         # Create mock Room records
         room1 = Room(name="Room 1", max_occupancy=10)
@@ -29,4 +34,8 @@ def init():
 
         session.add_all([room1, room2, room3])
         session.add_all([user1, user2, user3])
+        session.commit()
+        
+        session.refresh(room1)
+        session.delete(room1)
         session.commit()
