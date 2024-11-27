@@ -24,6 +24,9 @@ GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 GOOGLE_REDIRECT_URI = "http://localhost:8000/auth/google"
 router = APIRouter()
 
+### AUTHENTICATION ROUTES ###
+### ROOT IS /auth ###
+
 @router.get("/login/google")
 async def login_google():
     from fastapi.responses import RedirectResponse

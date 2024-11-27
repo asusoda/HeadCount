@@ -1,4 +1,4 @@
-from sqlmodel import Session, select
+from sqlmodel import Session, select, SQLModel
 from app.database import engine
 from app.services.rooms.models import Room
 
@@ -6,6 +6,13 @@ from fastapi import APIRouter
 from fastapi import HTTPException, status
 
 router = APIRouter()
+
+class RoomUpdate(SQLModel):
+    name: str | None = None
+    max_occupancy: int | None = None
+
+### ROOM ROUTES ###
+### ROOT IS /rooms ###
 
 @router.post('/test')
 async def test(room: Room) -> Room:
