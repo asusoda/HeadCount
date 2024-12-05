@@ -48,8 +48,10 @@ async def auth_google(code: str):
     access_token = response.json().get("access_token")
     user_info = requests.get("https://www.googleapis.com/oauth2/v1/userinfo", headers={"Authorization": f"Bearer {access_token}"})
     with Session(engine) as session:
-        session.add(User(**user_info.json()))
-        session.commit()
+        user = session.exec(select(User).where(User.email == user_info.json()["email"])).first()
+        if not user:
+          session.add(User(**user_info.json()))
+          session.commit()
 
     # Generate a JWT token for the user
     token = jwt.encode({"sub": user_info.json()["email"]}, GOOGLE_CLIENT_SECRET, algorithm="HS256")
